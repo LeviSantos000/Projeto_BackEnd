@@ -1,11 +1,15 @@
 const {DataTypes, Model} = require('sequelize')
 const connection = require('../config/connection')
-const Products = require('./Products')
-const Categories = require('./Categories')
 
-class Products_Category extends Model{}
+class ProductCategory extends Model{
+    static associate({Product, Category}) {
+        ProductCategory.belongsTo(Product, { foreignKey: 'product_id' })
+        ProductCategory.belongsTo(Category, { foreignKey: 'category_id' })
+    }
+}
 
-Products_Category.init(
+// Criação da tabela ProductCategory
+ProductCategory.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -16,26 +20,28 @@ Products_Category.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'products',
+                model: 'product',
                 key: 'id'
-            }
+            },
+            onDelete: 'CASCADE'
         },
         category_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'categories',
+                model: 'category',
                 key: 'id'
-            }
+            },
+            onDelete: 'CASCADE'
         }
     },
     {
-        tableName: 'products_category',
-        modelName: 'Products_Category',
+        tableName: 'product_category',
+        modelName: 'Product_Category',
         timestamps: false,
         underscored: true,
         sequelize: connection
     }
 )
 
-module.exports = Products_Category
+module.exports = ProductCategory

@@ -1,15 +1,14 @@
 const { DataTypes, Model } = require('sequelize')
 const connection = require('../config/connection')
-const Products = require('./Products')
 
-class ProductsOptions extends Model{
-    static associate() {
-        Products.hasMany(ProductsOptions, {foreignKey: 'product_id'})
-        ProductsOptions.belongsTo(Products, {foreignKey: 'product_id'})
+class ProductOption extends Model{
+    static associate({Product}) {
+        ProductOption.belongsTo(Product, { foreignKey: 'product_id' })
     }
 }
 
-ProductsOptions.init(
+// Criação da tabela ProductOption
+ProductOption.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -20,16 +19,17 @@ ProductsOptions.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'products',
+                model: 'product',
                 key: 'id'
-            }
+            },
+            onDelete: 'CASCADE'
         },
         title: {
             type: DataTypes.STRING(255),
             allowNull: false
         },
         shape: {
-            type: DataTypes.ENUM,
+            type: DataTypes.ENUM('square', 'circle'),
             allowNull: true,
             defaultValue: 'square'
         },
@@ -39,7 +39,7 @@ ProductsOptions.init(
             defaultValue: 0
         },
         type: {
-            type: DataTypes.ENUM,
+            type: DataTypes.ENUM('text', 'color'),
             allowNull: true,
             defaultValue: 'text'
         },
@@ -49,12 +49,12 @@ ProductsOptions.init(
         }
     },
     {
-        tableName: 'products_options',
-        modelName: 'ProductsOptions',
+        tableName: 'product_option',
+        modelName: 'Product_Option',
         timestamps: false,
         underscored: true,
         sequelize: connection
     }
 )
 
-module.exports = ProductsOptions
+module.exports = ProductOption

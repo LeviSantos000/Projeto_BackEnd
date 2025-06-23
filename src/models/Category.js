@@ -1,9 +1,19 @@
 const { DataTypes, Model} = require('sequelize')
 const connection = require('../config/connection')
 
-class Categories extends Model{}
+class Category extends Model{
+    static associate({Product, ProductCategory}) {
+        Category.belongsToMany(Product, {
+            through: ProductCategory,
+            foreignKey: 'category_id',
+            otherKey: 'product_id',
+            as: 'products'
+        })
+    }
+}
 
-Categories.init(
+// Criação da tabela Category
+Category.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -11,11 +21,11 @@ Categories.init(
             primaryKey: true
         },
         name: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         slug: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         use_in_menu: {
@@ -25,12 +35,12 @@ Categories.init(
         }
     },
     {
-        tableName: 'categories',
-        modelName: 'Categories',
+        tableName: 'category',
+        modelName: 'Category',
         timestamps: true,
         underscored: true,
         sequelize: connection
     }
 )
 
-module.exports = Categories
+module.exports = Category

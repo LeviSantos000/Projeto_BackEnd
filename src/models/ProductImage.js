@@ -1,14 +1,14 @@
 const { DataTypes, Model } = require('sequelize')
 const connection = require('../config/connection')
-const Products = require('./Products')
 
-class ProductsImages extends Model{
-    static associate() {
-        ProductsImages.belongsTo(Products, {foreignKey: 'product_id'})
+class ProductImage extends Model{
+    static associate({Product}) {
+        ProductImage.belongsTo(Product, { foreignKey: 'product_id' })
     }
 }
 
-ProductsImages.init(
+// Criação da tabela ProductImage
+ProductImage.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -19,7 +19,7 @@ ProductsImages.init(
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'products',
+                model: 'product',
                 key: 'id'
             },
             onDelete: 'CASCADE'
@@ -35,12 +35,12 @@ ProductsImages.init(
         }
     },
     {
-        tableName: 'products_images',
-        modelName: 'ProductsImages',
+        tableName: 'product_image',
+        modelName: 'Product_Image',
         timestamps: false,
         underscored: true,
         sequelize: connection
     }
 )
 
-module.exports = ProductsImages
+module.exports = ProductImage

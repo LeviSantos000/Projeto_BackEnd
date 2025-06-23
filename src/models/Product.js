@@ -1,9 +1,21 @@
 const {DataTypes, Model} = require('sequelize')
 const connection = require('../config/connection')
 
-class Products extends Model{}
+class Product extends Model{
+    static associate({ProductImage, ProductOption, Category, ProductCategory}) {
+        Product.hasMany(ProductImage, { foreignKey: 'product_id', a: 'images' })
+        Product.hasMany(ProductOption, { foreignKey: 'product_id', as: 'options' })
+        Product.belongsToMany(Category, {
+            through: ProductCategory,
+            foreignKey: 'product_id',
+            otherKey: 'category_id',
+            as: 'categories'
+        })
+    }
+}
 
-Products.init(
+// Criação da tabela Product
+Product.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -16,11 +28,11 @@ Products.init(
             defaultValue: false
         },
         name: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         slug: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         use_in_menu: {
@@ -47,12 +59,12 @@ Products.init(
         }
     },
     {
-        tableName: 'products',
-        modelName: 'Products',
+        tableName: 'product',
+        modelName: 'Product',
         timestamps: true,
         underscored: true,
         sequelize: connection
     }
 )
 
-module.exports = Products
+module.exports = Product

@@ -1,3 +1,4 @@
+// Criando conexão com o Banco de Dados
 const { Sequelize } = require('sequelize')
 
 const connection = new Sequelize({

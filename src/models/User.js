@@ -1,9 +1,10 @@
 const {DataTypes, Model} = require('sequelize')
 const connection = require('../config/connection')
 
-class Users extends Model{}
+class User extends Model{}
 
-Users.init(
+// Criação da tabela User
+User.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -11,28 +12,28 @@ Users.init(
             primaryKey: true
         },
         firstname: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         surname: {
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         email: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         password: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(100),
             allowNull: false
         }
     },
-    {   tableName: 'users',
-        modelName: 'Users',
+    {   tableName: 'user',
+        modelName: 'User',
         timestamps: true,
         underscored: true,
         sequelize: connection
     }
 )
 
-module.exports = Users
+module.exports = User
