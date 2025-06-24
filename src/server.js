@@ -1,13 +1,13 @@
 const express = require('express')
 const UserRotas = require('./routes/UserRoute')
-const app = express.Router()
 
+const app = express()
 const host = 'localhost'
 const port = 3000
 
 app.use(express.json())
 app.get('/', (request, response) => {
-    response.json("Seja Bem Vindo ao Meu Projeto Back-End!")
+    response.send("Seja Bem Vindo ao Meu Projeto Back-End!")
 })
 
 app.use(UserRotas)
