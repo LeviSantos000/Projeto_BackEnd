@@ -1,13 +1,13 @@
 const express = require('express')
 const UserController = require('../controllers/UserController')
-const UserRotas = express.Router()
+const UserRoutes = express.Router()
 
 const userController = new UserController
 
-UserRotas.get('/users', userController.listar)
-UserRotas.get('/users/:id', userController.buscarPorId)
-UserRotas.post('/users', userController.criar)
-UserRotas.put('/users/:id', userController.atualizar)
-UserRotas.delete('/users/:id', userController.deletar)
+UserRoutes.get('/users', userController.listar)
+UserRoutes.get('/users/:id', userController.buscarPorId)
+UserRoutes.post('/users', userController.criar)
+UserRoutes.put('/users/:id', userController.atualizar)
+UserRoutes.delete('/users/:id', userController.deletar)
 
-module.exports = UserRotas
+module.exports = UserRoutes

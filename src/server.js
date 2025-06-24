@@ -1,5 +1,5 @@
 const express = require('express')
-const UserRotas = require('./routes/UserRoute')
+const UserRoutes = require('./routes/UserRoute')
 
 const app = express()
 const host = 'localhost'
@@ -10,7 +10,7 @@ app.get('/', (request, response) => {
     response.send("Seja Bem Vindo ao Meu Projeto Back-End!")
 })
 
-app.use(UserRotas)
+app.use(UserRoutes)
 
 app.listen(port, host, () => {
     console.log(`O servidor está executando em http://${host}:${port}`)

@@ -3,11 +3,20 @@ const User = require('../models/User')
 class UserController {
 
     async listar(request, response) {
-        let users = await User.findAll({
-            attributes: ['id', 'firstname', 'surname', 'email']
-        })
+        try {
 
-        return response.status(200).json(users)
+            let users = await User.findAll({
+            attributes: ['id', 'firstname', 'surname', 'email']
+            })
+
+            return response.status(200).json(users)
+
+        } catch (error) {
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
+            })
+        }
     }
     
     async buscarPorId(request, response) {
@@ -18,21 +27,37 @@ class UserController {
             attributes: ['id', 'firstname', 'surname', 'email']
             })
 
+            if (!users) {
+                return response.status(404).json({
+                    message: "Usuário não existe."
+                })
+            }
+
             return response.status(200).json(users)
 
         } catch (error) {
-            return response.status(404).json("Usuário não existe")
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
+            })
         }
     }
 
     async criar(request, response) {
         try {
-            let body = request.body
-            const {username, surname, email, password} = body
 
-            if (!username || !surname || !email || !password) {
+            let body = request.body
+            const {firstname, surname, email, password} = body
+
+            if (!firstname || !surname || !email || !password) {
                 return response.status(400).json({
-                    message: "Todos os campos são obrigatórios!"
+                    message: "Todos os campos são obrigatórios."
+                })
+            }
+
+            if (await User.findOne({ where: { email } })) {
+                return response.status(400).json({
+                    message: "Email já cadastrado."
                 })
             }
 
@@ -42,36 +67,69 @@ class UserController {
             })
 
         } catch (error) {
-            return response.status(400).json({
-                message: "Dados da requisição incorretos!"
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
             })
         }
     }
 
     async atualizar(request, response) {
         try {
+
             const id = request.params.id
             const body = request.body
+            const {firstname, surname, email, password} = body
 
-            await User.update(body, { where: {id} })
-            return response.status(204).json({
-                message: "Usuário atualizado com sucesso!"
-            })
+            if (!firstname || !surname || !email || !password) {
+                return response.status(400).json({
+                    message: "Todos os campos são obrigatórios."
+                })
+            }
+
+            if (await User.findOne({ where: { email } })) {
+                return response.status(400).json({
+                    message: "Email já cadastrado."
+                })
+            }
+            
+            if (!await User.findOne({ where: { id } })) {
+                return response.status(404).json({
+                    message: "Usuário não existe."
+                })
+            }
+
+            await User.update(body, { where: { id } })
+            return response.status(204).end()
             
         } catch (error) {
-            return response.json({
-                message: "Requisição com dados incorretos!"
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
             })
         }
     }
 
     async deletar(request, response) {
-        const id = request.params.id
+        try {
+
+            const id = request.params.id
+
+            if (!await User.findOne({ where: { id } })) {
+                return response.status(404).json({
+                    message: "Usuário não existe."
+                })
+            }
         
-        await User.destroy({ where: {id} })
-        return response.status(204).json({
-            message: "Usuário excluído com sucesso!"
-        })
+            await User.destroy({ where: { id } })
+            return response.status(204).end()
+            
+        } catch (error) {
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
+            })
+        }
     }
 }
 
