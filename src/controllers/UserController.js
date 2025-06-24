@@ -47,6 +47,23 @@ class UserController {
             })
         }
     }
+
+    async atualizar(request, response) {
+        try {
+            const id = request.params.id
+            const body = request.body
+
+            await User.update(body, { where: {id} })
+            return response.status(204).json({
+                message: "Usuário atualizado com sucesso!"
+            })
+            
+        } catch (error) {
+            return response.json({
+                message: "Requisição com dados incorretos!"
+            })
+        }
+    }
 }
 
 module.exports = UserController
