@@ -64,6 +64,15 @@ class UserController {
             })
         }
     }
+
+    async deletar(request, response) {
+        const id = request.params.id
+        
+        await User.destroy({ where: {id} })
+        return response.status(204).json({
+            message: "Usuário excluído com sucesso!"
+        })
+    }
 }
 
 module.exports = UserController
