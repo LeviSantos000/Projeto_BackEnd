@@ -148,6 +148,28 @@ class CategoryController {
             })
         }
     }
+
+    async deletar(request, response) {
+        try {
+
+            const id = request.params.id
+
+            if (!await Category.findByPk(id)) {
+                return response.status(404).json({
+                    message: "Categoria não existe."
+                })
+            }
+
+            await Category.destroy({ where: { id } })
+            return response.status(204).end()
+            
+        } catch (error) {
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
+            })
+        }
+    }
 }
 
 module.exports = CategoryController

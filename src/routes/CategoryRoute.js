@@ -8,5 +8,6 @@ CategoryRoutes.get('/category/search', categoryController.listar)
 CategoryRoutes.get('/category/:id', categoryController.buscarPorId)
 CategoryRoutes.post('/category', categoryController.criar)
 CategoryRoutes.put('/category/:id', categoryController.atualizar)
+CategoryRoutes.delete('/category/:id', categoryController.deletar)
 
 module.exports = CategoryRoutes
