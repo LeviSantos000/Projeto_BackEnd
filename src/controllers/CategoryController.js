@@ -66,6 +66,36 @@ class CategoryController {
             })
         }
     }
+
+    async criar(request, response) {
+        try {
+
+            const {name, slug, use_in_menu} = request.body
+
+            if (!name || !slug || use_in_menu === undefined) {
+                return response.status(400).json({
+                    message: "Todos os campos são obrigatórios."
+                })
+            }
+
+            if (typeof use_in_menu !== 'boolean') {
+                 return response.status(400).json({
+                    message: "O campo 'use_in_menu' deve ser um valor booleano (true ou false)."
+                });
+            }
+
+            await Category.create({name, slug, use_in_menu})
+            return response.status(201).json({
+                message: "Categoria cadastrada com sucesso!"
+            })
+            
+        } catch (error) {
+           console.error(error)
+           return response.status(500).json({
+            message: "Erro interno no servidor."
+           })
+        }
+    }
 }
 
 module.exports = CategoryController
