@@ -7,5 +7,6 @@ const categoryController = new CategoryController
 CategoryRoutes.get('/category/search', categoryController.listar)
 CategoryRoutes.get('/category/:id', categoryController.buscarPorId)
 CategoryRoutes.post('/category', categoryController.criar)
+CategoryRoutes.put('/category/:id', categoryController.atualizar)
 
 module.exports = CategoryRoutes

@@ -96,6 +96,58 @@ class CategoryController {
            })
         }
     }
+
+    async atualizar(request, response) {
+        try {
+
+            const id = request.params.id
+            const {name, slug, use_in_menu} = request.body
+
+            if (!await Category.findByPk(id)) {
+                return response.status(404).json({
+                    message: "Categoria não existe."
+                })
+            }
+
+            let updateData = {};
+
+            if (name !== undefined) {
+                if (typeof name !== 'string' || name.trim() === '') {
+                    return response.status(400).json({
+                        message: "O campo 'name' deve ser uma string não vazia."
+                    });
+                }
+                updateData.name = name;
+            }
+
+            if (slug !== undefined) {
+                 if (typeof slug !== 'string' || slug.trim() === '') {
+                    return response.status(400).json({
+                        message: "O campo 'slug' deve ser uma string não vazia."
+                    });
+                }
+                updateData.slug = slug;
+            }
+
+            if (use_in_menu !== undefined) {
+                if (typeof use_in_menu !== 'boolean') {
+                    return response.status(400).json({
+                        message: "O campo 'use_in_menu' deve ser um valor booleano (true ou false)."
+                    });
+                }
+                updateData.use_in_menu = use_in_menu;
+            }
+
+            await Category.update(updateData, { where: { id } })
+            return response.status(204).end()
+            
+        } catch (error) {
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
+            })
+        }
+    }
 }
 
 module.exports = CategoryController
