@@ -1,5 +1,6 @@
 const express = require('express')
 const UserRoutes = require('./routes/UserRoute')
+const CategoryRoutes = require('./routes/CategoryRoute')
 
 const app = express()
 const host = 'localhost'
@@ -11,6 +12,7 @@ app.get('/', (request, response) => {
 })
 
 app.use(UserRoutes)
+app.use(CategoryRoutes)
 
 app.listen(port, host, () => {
     console.log(`O servidor está executando em http://${host}:${port}`)
