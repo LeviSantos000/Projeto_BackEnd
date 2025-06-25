@@ -44,4 +44,26 @@ class CategoryController {
             })
         }
     }
+
+    async buscarPorId(request, response) {
+        try {
+
+            const id = request.params.id
+            const category = await Category.findByPk(id)
+
+            if (!category) {
+                return response.status(404).json({
+                    message: "Categoria não existe."
+                })
+            }
+
+            return response.status(200).json(category)
+            
+        } catch (error) {
+            console.error(error)
+            return response.status(500).json({
+                message: "Erro interno no servidor."
+            })
+        }
+    }
 }

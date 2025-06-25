@@ -5,5 +5,6 @@ const CategoryRoutes = express.Router()
 const categoryController = new CategoryController
 
 CategoryRoutes.get('/category/search', categoryController.listar)
+CategoryRoutes.get('/category/:id', categoryController.buscarPorId)
 
 module.exports = CategoryRoutes
