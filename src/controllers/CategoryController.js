@@ -5,7 +5,7 @@ class CategoryController {
         try {
 
             const limit = parseInt(request.query.limit) || 12
-            const page = parseInt(request.query.limit) || 1
+            const page = parseInt(request.query.page) || 1
             const fields = request.query.fields ? request.query.fields.split(',') : ['id', 'name', 'slug', 'use_in_menu']
             const useInMenu = request.query.use_in_menu
 
